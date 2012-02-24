@@ -59,16 +59,27 @@ greaterThan(QT_MAJOR_VERSION, 4) {
     QT += declarative
     CONFIG += mobility qdeclarative-boostable
     MOBILITY += feedback location systeminfo sensors
+} else:symbian {
+    message("Qt4 build")
+    message("Symbian build")
+
+    OTHER_FILES += qml/main_symbian.qml \
+        qml/cordova_wrapper.js
+
+    symbian:TARGET.UID3 = 0xE3522943
+    #symbian:DEPLOYMENT.installer_header = 0x2002CCCF
+    symbian:TARGET.CAPABILITY += NetworkServices
+
+    QT += declarative
+
+    CONFIG += mobility
+    MOBILITY += feedback location systeminfo sensors
 } else {
     message("Qt4 build")
     message("Non-harmattan build")
 
     OTHER_FILES += qml/main.qml \
         qml/cordova_wrapper.js
-
-    symbian:TARGET.UID3 = 0xE3522943
-    #symbian:DEPLOYMENT.installer_header = 0x2002CCCF
-    symbian:TARGET.CAPABILITY += NetworkServices
 
     QT += declarative
 
