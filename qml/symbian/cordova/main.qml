@@ -9,7 +9,7 @@ PageStackWindow {
     id: appWindow
     initialPage: mainPage
     showToolBar: false
-
+    showStatusBar: true
     Page {
         id: mainPage
 

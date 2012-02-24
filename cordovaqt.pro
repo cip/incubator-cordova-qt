@@ -4,9 +4,6 @@
 # dir1.source = mydir
 wwwDir.source = www
 xmlDir.source = xml
-qmlDir.source = qml
-
-DEPLOYMENTFOLDERS = wwwDir xmlDir qmlDir # file1 dir1
 
 
 SOURCES += main.cpp \
@@ -36,6 +33,10 @@ HEADERS += \
     src/cordova.h \
     src/cplugin.h
 
+#QML (Common)
+common_qml.source = qml/common/cordova
+common_qml.target = qml
+
 greaterThan(QT_MAJOR_VERSION, 4) {
     message("Qt5 build")
     QT += widgets
@@ -44,11 +45,9 @@ greaterThan(QT_MAJOR_VERSION, 4) {
     QT += feedback
     QT += systeminfo
     QT += quick declarative
-
-    OTHER_FILES += qml/main_qt5.qml \
-        qml/main_harmattan_qt5.qml \
-        qml/cordova_wrapper.js
-
+    #TODO distinguish between harmattan and normal qt5
+    platform_qml.source = qml/qt5/cordova
+    platform_qml.target = qml
 } else:!isEmpty(MEEGO_VERSION_MAJOR) {
     message("Qt4 build")
     message("Harmattan build")
@@ -59,18 +58,24 @@ greaterThan(QT_MAJOR_VERSION, 4) {
     QT += declarative
     CONFIG += mobility qdeclarative-boostable
     MOBILITY += feedback location systeminfo sensors
+    # QML (Harmattan components) related
+    platform_qml.source = qml/harmattan/cordova
+    platform_qml.target = qml
 } else:symbian {
     message("Qt4 build")
     message("Symbian build")
-
-    OTHER_FILES += qml/main_symbian.qml \
-        qml/cordova_wrapper.js
+    # QML (Symbian components) related
+    platform_qml.source = qml/symbian/cordova
+    platform_qml.target = qml
 
     symbian:TARGET.UID3 = 0xE3522943
     #symbian:DEPLOYMENT.installer_header = 0x2002CCCF
     symbian:TARGET.CAPABILITY += NetworkServices Location
 
     QT += declarative
+
+    # Add dependency to Symbian components
+    CONFIG += qt-components
 
     CONFIG += mobility
     MOBILITY += feedback location systeminfo sensors
@@ -86,12 +91,13 @@ greaterThan(QT_MAJOR_VERSION, 4) {
     CONFIG += mobility
     MOBILITY += feedback location systeminfo sensors
 }
-
-QT += webkit
+DEPLOYMENTFOLDERS = common_qml platform_qml wwwDir xmlDir
 
 # Please do not modify the following two lines. Required for deployment.
-include(deployment.pri)
+include(qmlapplicationviewer/qmlapplicationviewer.pri)
 qtcAddDeployment()
+
+QT += webkit
 
 OTHER_FILES += \
     qtc_packaging/debian_harmattan/rules \
