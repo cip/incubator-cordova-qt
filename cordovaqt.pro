@@ -68,7 +68,7 @@ greaterThan(QT_MAJOR_VERSION, 4) {
 
     symbian:TARGET.UID3 = 0xE3522943
     #symbian:DEPLOYMENT.installer_header = 0x2002CCCF
-    symbian:TARGET.CAPABILITY += NetworkServices
+    symbian:TARGET.CAPABILITY += NetworkServices Location
 
     QT += declarative
 
