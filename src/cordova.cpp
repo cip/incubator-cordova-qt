@@ -30,7 +30,7 @@ Cordova::Cordova(QObject *parent) : QObject(parent) {
     m_topLevelEventsReceiver = 0;
     // Determine index file path
     m_workingDir = QApplication::applicationDirPath();
-#ifdef MEEGO_EDITION_HARMATTAN
+#if defined(MEEGO_EDITION_HARMATTAN) || defined(Q_WS_SIMULATOR)
     m_workingDir.cdUp();
 #endif
     qDebug() << "Using" << m_workingDir.absolutePath() << "as working dir";
