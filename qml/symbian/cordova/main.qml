@@ -1,15 +1,26 @@
 import QtQuick 1.1
 import com.nokia.symbian 1.1
+import com.nokia.extras 1.1
+
 import QtWebKit 1.0
 import "cordova_wrapper.js" as CordovaWrapper
-
-
 
 PageStackWindow {
     id: appWindow
     initialPage: mainPage
     showToolBar: false
     showStatusBar: true
+
+    // Create an info banner with no icon
+    InfoBanner {
+        id: banner
+        text: ""
+        function showMessage(msg) {
+            text = msg
+            open()
+        }
+    }
+
     Page {
         id: mainPage
 
@@ -68,6 +79,9 @@ PageStackWindow {
 
                 onLoadFinished: cordova.loadFinished(true)
                 onLoadFailed: cordova.loadFinished(false)
+                //Show javascript alert as a banner.
+                //TODO: Consider replacing by dialog.
+                onAlert: banner.showMessage(message)
 
                 Connections {
                     target: cordova
