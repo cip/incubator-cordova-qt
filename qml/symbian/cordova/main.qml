@@ -36,13 +36,26 @@ PageStackWindow {
                 settings.offlineStorageDatabaseEnabled: true
                 settings.localContentCanAccessRemoteUrls: true
                 javaScriptWindowObjects: [QtObject{
-                    WebView.windowObjectName: "qmlWrapper"
+                        WebView.windowObjectName: "qmlWrapper"
 
-                    function callPluginFunction(pluginName, functionName, parameters) {
-                        parameters = eval("("+parameters+")")
-                        CordovaWrapper.execMethodOld(pluginName, functionName, parameters)
+                        function callPluginFunction(pluginName, functionName, parameters) {
+                            parameters = eval("("+parameters+")")
+                            CordovaWrapper.execMethodOld(pluginName, functionName, parameters)
+                        }
+                    },
+                    QtObject {
+                        //Provide console log to javascript functionality
+                        // (Appearantly else at least on symbian console log
+                        //  produces not output)
+                        // Note that in cordova-qt there is a console plugin
+                        // with the same objective, but implementing
+                        // it here does not require adding js/plugin
+                        WebView.windowObjectName: "console"
+                        function log(msg) {
+                            console.log("[JSLOG] "+msg);
+                        }
                     }
-                }]
+                ]
 
                 onLoadFinished: cordova.loadFinished(true)
                 onLoadFailed: cordova.loadFinished(false)
