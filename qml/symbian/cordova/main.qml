@@ -54,6 +54,15 @@ PageStackWindow {
                         function log(msg) {
                             console.log("[JSLOG] "+msg);
                         }
+                    },
+                    QtObject {
+                        //in cordova-qt there is appearantly no support
+                        // for closing an app. For now implemented here.
+                        WebView.windowObjectName: "qml"
+
+                        function exitApp() {
+                            Qt.quit()
+                        }
                     }
                 ]
 
