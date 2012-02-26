@@ -61,7 +61,7 @@ greaterThan(QT_MAJOR_VERSION, 4) {
     # QML (Harmattan components) related
     platform_qml.source = qml/harmattan/cordova
     platform_qml.target = qml
-} else:symbian {
+} else:symbian|simulator {
     message("Qt4 build")
     message("Symbian build")
     # QML (Symbian components) related
